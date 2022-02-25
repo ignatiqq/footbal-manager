@@ -1,8 +1,8 @@
 import type { IAction } from "../interfaces/reducer";
 import type { Reducer } from "redux";
 
-interface IGlobalSettings {
-    theme: string| null
+export interface IGlobalSettings {
+    theme: string | null
 }
 
 const initialState = {

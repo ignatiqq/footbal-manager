@@ -24,6 +24,7 @@ body[data-theme='light'] {
 }
 
 input {
+  color: #2f2f30;
   outline: none;
 }
 

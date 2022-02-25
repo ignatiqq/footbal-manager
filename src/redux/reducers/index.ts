@@ -5,7 +5,7 @@ import footbalData from "./footbalData";
 
 const rootReducer = combineReducers({
     globalSettings,
-    footbalData
+    footbalData,
 })
 
 export default rootReducer;

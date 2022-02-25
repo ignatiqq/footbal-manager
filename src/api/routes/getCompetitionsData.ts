@@ -1,13 +1,13 @@
+import requestConfig from "../requestConfig";
 
 class getCompetitionsData {
 
-    getCompetitions() {
-        return fetch(`${process.env.REACT_APP_API_URL}/competitions`, {
-            method: "GET",
-            headers: {
-                'X-Auth-Token': 'f9810a17836e4050840680fe63fa0f01'
-            }
-        })
+    getCompetitions(): Promise<Response> {
+        return requestConfig(`${process.env.REACT_APP_API_URL}/competitions`)
+    }
+
+    getCompetitionById(id: number): Promise<Response> {
+        return requestConfig(`${process.env.REACT_APP_API_URL}/competitions/${id}/matches`)
     }
 
 }

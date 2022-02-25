@@ -1,22 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { createSelector } from 'reselect';
+import type { RootState } from '../../redux/store';
+
+import { CHANGE_THEME } from '../../redux/sagas/actions';
 
 import logo from "../../assets/images/logo.png";
 import moonIcon from "../../assets/images/moonIcon.png";
 import sunIcon from "../../assets/images/sunIcon.png"; 
 
+const selectTheme = createSelector(
+    (state: RootState) => state.globalSettings.theme,
+    (theme) => ({theme})
+  )
 
 const Header: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { theme } = useAppSelector(({globalSettings}) => ({
-        theme: globalSettings.theme
-    }))
+    const { theme } = useAppSelector(selectTheme);
 
     const changeThemeHandler = () => {
-        dispatch({type: "CHANGE_THEME"});
+        dispatch({type: CHANGE_THEME});
     }
 
     React.useEffect(() => {

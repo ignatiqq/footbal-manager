@@ -1,4 +1,5 @@
 export interface IApiRequestError {
     message: string,
-    error: number
+    error?: number,
+    errorCode?: number
 }

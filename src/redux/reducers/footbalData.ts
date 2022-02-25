@@ -1,10 +1,10 @@
 import type { IAction } from "../interfaces/reducer";
 import type { Reducer } from "redux";
-import type { ICompetitions } from "../sagas/getData";
+import type { ICompetitions, ICurrentCompetition } from "../sagas/fetchData/interfaces";
 
 interface IFootbalData {
-    competitions: {
-        data: ICompetitions | null,
+    readonly competitions: {
+        readonly data: ICompetitions | null,
         pagination: {
             page: number,
             limit: number
@@ -12,7 +12,14 @@ interface IFootbalData {
         isLoading: boolean,
         error: {
             message: string
-        } | null
+        },
+    },
+    readonly currentCompetition: {
+        readonly data: ICurrentCompetition | null,
+        isLoading: boolean,
+        error: {
+            message: string
+        }
     }
 }
 
@@ -23,6 +30,13 @@ const initialState = {
             page: 1,
             limit: 9
         },
+        isLoading: false,
+        error: {
+            message: ""
+        }
+    },
+    currentCompetition: {
+        data: null,
         isLoading: false,
         error: {
             message: ""
@@ -38,7 +52,10 @@ const footbalData: Reducer<IFootbalData,IAction> = (state = initialState, action
                 ...state,
                 competitions: {
                     ...state.competitions,
-                    data: action.payload
+                    data: action.payload,
+                    error: {
+                        message: ""
+                    }
                 }
             }
         }
@@ -58,7 +75,57 @@ const footbalData: Reducer<IFootbalData,IAction> = (state = initialState, action
                 ...state,
                 competitions: {
                     ...state.competitions,
-                    error: action.payload
+                    error: {
+                        message: action.payload
+                    }
+                }
+            }
+        }
+
+        case "SET_COMPETITIONS_PAGE": {
+            return {
+                ...state,
+                competitions: {
+                    ...state.competitions,
+                    pagination: {
+                        ...state.competitions.pagination,
+                        page: action.payload
+                    }
+                }
+            }
+        }
+
+        case "SET_CURRENT_COMPETITION": {
+            return {
+                ...state,
+                currentCompetition: {
+                    ...state.currentCompetition,
+                    data: action.payload,
+                    error: {
+                        message: ""
+                    }
+                }
+            }
+        }
+
+        case "SET_CURRENT_COMPETITION_LOADING": {
+            return {
+                ...state,
+                currentCompetition: {
+                    ...state.currentCompetition,
+                    isLoading: action.payload
+                }
+            }
+        }
+
+        case "SET_CURRENT_COMPETITION_ERROR": {
+            return {
+                ...state,
+                currentCompetition: {
+                    ...state.currentCompetition,
+                    error: {
+                        message: action.payload
+                    }
                 }
             }
         }

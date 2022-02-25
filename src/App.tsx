@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import { Header } from "./components/index";
-import { Main } from "./pages";
+import { Competitions, PageNotFound, CompetitionPage } from "./pages";
 
 function App() {
   return (
@@ -10,9 +10,11 @@ function App() {
       <Header />
       <div className="w-full max-w-screen-2xl mx-auto my-0">
           <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/leagues" element={<div>123</div>} />
+            <Route path="/" element={<Competitions />} />
+            <Route path="/:id/matches" element={<CompetitionPage />} />
+            <Route path="/leagues" element={<Competitions />} />
             <Route path="/teams" element={<div>123</div>} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
       </div>
     </>
