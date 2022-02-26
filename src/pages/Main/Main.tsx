@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
   
-import type { ICompetitionOne } from '../../redux/sagas/fetchData/interfaces';
+import type { ICompetitionOne } from '../../redux/sagas/competitions/interfaces';
 
 import { Search, Loader, CompetitionCard, Paginator } from '../../components';
-import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE } from '../../redux/sagas/actions';
+import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/actionNames';
 
 const Competitions: React.FC = () => {
     const [search, setSearch] = React.useState<string>("");
-    const [slicedData, setSlicedData] = React.useState<Array<ICompetitionOne> | null>(null);
+    const [slicedData, setSlicedData] = React.useState<Array<ICompetitionOne>>();
 
     const dispatch = useAppDispatch();
 
@@ -22,6 +22,7 @@ const Competitions: React.FC = () => {
 
     React.useEffect(() => {
         dispatch({type: GET_COMPETITIONS_DATA})
+        dispatch({type: CLEAR_CURRENT_COMPETITION})
     }, []);
 
     React.useEffect(() => {
@@ -49,7 +50,7 @@ const Competitions: React.FC = () => {
     }
 
     return (
-      <div className="px-4">
+      <div>
         <div className="my-6">
           <Search
             theme={theme}

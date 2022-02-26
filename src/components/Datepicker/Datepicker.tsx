@@ -1,28 +1,37 @@
 import React, {ForwardedRef} from "react";
 import DatePicker from "react-datepicker";
 
+import { getUTCDate } from "../../utils/dates";
+
 import "./style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface IDatepicker {
-    firstMatchDate: string | null
+    firstMatchDate: string | null,
+    changeDataHandler: (startDate: Date, endDate: Date) => void
 }
 
-const Datepicker: React.FC<IDatepicker> = ({firstMatchDate}) => {
-    const [startDate, setStartDate] = React.useState<Date | null>(null);
-    const [endDate, setEndDate] = React.useState<Date | null>(new Date(Date.now() - ((new Date().getTimezoneOffset()) * 60)));
-
-    const CustomDatePickerInput = React.forwardRef(({ value, onClick}: any, ref:ForwardedRef<HTMLButtonElement> ) => (
-        <button ref={ref} onClick={onClick} className="text-zinc-50 bg-stone-700 text-lg rounded-sm placeholder:text-lg px-2 shadow-lg border mr-2">
-            {value}
-        </button>
-    ));
+const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) => {
+    const [startDate, setStartDate] = React.useState<Date | null>();
+    const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate());
 
     React.useEffect(() => {
         if(firstMatchDate) {
             setStartDate(new Date(firstMatchDate));
         }
     }, [firstMatchDate])
+
+    React.useEffect(() => {
+        if(startDate && endDate) {
+            changeDataHandler(startDate, endDate)
+        }
+    }, [startDate, endDate])
+
+    const CustomDatePickerInput = React.forwardRef(({ value, onClick}: any, ref:ForwardedRef<HTMLButtonElement> ) => (
+        <button ref={ref} onClick={onClick} className="text-zinc-50 bg-stone-700 text-lg rounded-sm placeholder:text-lg px-2 shadow-lg border mr-2">
+            {value}
+        </button>
+    ));
 
     return (
         <div className="flex">

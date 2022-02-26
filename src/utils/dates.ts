@@ -1,0 +1,11 @@
+export const getUTCDate = () => {
+    return new Date(Date.now() - ((new Date().getTimezoneOffset()) * 60))
+}
+
+export const formatToLocalDateString = (date: string) => {
+    return new Date(date).toLocaleDateString(navigator.language);
+}
+
+export const formatToLocalTimeString = (date: string) => {
+    return new Date(date).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+}

@@ -5,3 +5,4 @@ export { default as CompetitionCard } from "./CompetitionCard/CompetitionCard";
 export { default as Paginator } from "./Paginator/Paginator";
 export { default as Button } from "./Button/Button";
 export { default as Datepicker } from "./Datepicker/Datepicker";
+export { default as CardMatchInfo } from "./CardMatchInfo/CardMatchInfo";

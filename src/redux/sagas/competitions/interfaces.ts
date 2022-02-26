@@ -8,12 +8,12 @@ export interface ICompetitions {
 export interface ICompetitionOne {
     area: {id: number, name: string, countryCode: string, ensignUrl: null | string}
     code: string
-    currentSeason: {id: number, startDate: string, endDate: string, currentMatchday: number, winner: null | string}
-    emblemUrl: null | string
+    currentSeason?: {id: number, startDate: string, endDate: string, currentMatchday: number, winner: null | string}
+    emblemUrl?: null | string
     id: number
     lastUpdated: string
     name: string
-    numberOfAvailableSeasons: 2
+    numberOfAvailableSeasons?: 2
     plan: string
 }
 
@@ -36,12 +36,24 @@ export interface ICurrentCompetitionMatch {
     odds: any,
     score: {
         winner: string,
-        duration: string
+        duration: string,
+        fullTime: {
+            homeTeam: number | null,
+            awayTeam: number | null
+        },
+        halfTime: {
+            homeTeam: number | null,
+            awayTeam: number | null
+        },
+        extraTime: {
+            homeTeam: number | null,
+            awayTeam: number | null
+        },
+        penalties: {
+            homeTeam: number | null,
+            awayTeam: number | null
+        },
     },
-    fullTime: any,
-    halfTime: any,
-    extraTime: any,
-    penalties: any,
     homeTeam: {
         id: number,
         name: string
@@ -56,16 +68,6 @@ export interface ICurrentCompetitionMatch {
 export interface ICurrentCompetition {
         count: number,
         filters: object,
-        competition: {
-            id: number,
-            area: {
-                id: number,
-                name: string
-            },
-            name: string,
-            code: string,
-            plan: string,
-            lastUpdated: string
-        },
+        competition: ICompetitionOne,
         matches: Array<ICurrentCompetitionMatch>
 }

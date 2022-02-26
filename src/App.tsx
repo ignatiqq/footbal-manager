@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className="w-full max-w-screen-2xl mx-auto my-0">
+      <div className="w-full max-w-[1535px] mx-auto my-0 px-4">
           <Routes>
             <Route path="/" element={<Competitions />} />
             <Route path="/:id/matches" element={<CompetitionPage />} />

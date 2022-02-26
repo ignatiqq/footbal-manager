@@ -1,6 +1,6 @@
 import React from 'react'
 
-const usePagination = (count: number | null, limit: number, page: number, pagesRange: number | null = 2) => {
+const usePagination = (count: number | null, limit: number, page: number, pagesRange: number | null = 1) => {
     const [slicedPages, setSlicedPages] = React.useState<Array<number | string>>([]);
 
     React.useEffect(() => {

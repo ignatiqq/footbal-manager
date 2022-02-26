@@ -13,25 +13,42 @@ interface IPaginator {
     position?: "left" | "right" | "center",
     paginateHandler: (page: number | string) => void,
     prevPageHanlder: (data: React.MouseEvent<HTMLButtonElement >) => void,
-    nextPageHandler: (data: React.MouseEvent<HTMLButtonElement >) => void
+    nextPageHandler: (data: React.MouseEvent<HTMLButtonElement >) => void,
 }
 
-const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", paginateHandler, prevPageHanlder, nextPageHandler}) => {
+const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", paginateHandler, prevPageHanlder, nextPageHandler }) => {
     const [slicedPages] = usePagination(count, limit, page, pageRange);
 
     return (
-        <div className={`${position === "center" ? "justify-center" : position === "right" ? "justify-end" : "justify-start"} flex items-center m-4`}>
-            <button onClick={prevPageHanlder} className='mr-2 max-w-[24px]'>
-                <img src={prevIcon} alt="prev" />
-            </button>
-            {slicedPages && slicedPages.map((item, i) => (
-               <button onClick={() => paginateHandler(item)} className={`"border border-[#a5a5a5] hover:bg-[#a5a5a5] transition" ${item === page && "bg-[#a5a5a5]"} px-2 mx-2`} key={item + `${i}`}>{item}</button>
+      <div className={`${
+        position === 'center'
+          ? 'justify-center'
+          : position === 'right'
+          ? 'justify-end'
+          : 'justify-start'
+      } flex`}>
+        <button onClick={prevPageHanlder} className="mr-2 md:ml-1 max-w-[24px]">
+          <img src={prevIcon} alt="prev" />
+        </button>
+        <div
+          className={`flex items-center m-4 md:my-4`}>
+          {slicedPages &&
+            slicedPages.map((item, i) => (
+              <button
+                onClick={() => paginateHandler(item)}
+                className={`"border border-[#a5a5a5] hover:bg-[#a5a5a5] transition" ${
+                  item === page && 'bg-[#a5a5a5]'
+                } px-2 mx-2 md:mx-0`}
+                key={item + `${i}`}>
+                {item}
+              </button>
             ))}
-            <button onClick={nextPageHandler} className='ml-2 max-w-[24px]'>
-                <img src={nextIcon} alt="next" />
-            </button>
         </div>
-    )
+        <button onClick={nextPageHandler} className="ml-2 md:ml-1 max-w-[24px]">
+          <img src={nextIcon} alt="next" />
+        </button>
+      </div>
+    );
 }
 
 export default Paginator;

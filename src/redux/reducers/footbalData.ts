@@ -1,14 +1,16 @@
 import type { IAction } from "../interfaces/reducer";
 import type { Reducer } from "redux";
-import type { ICompetitions, ICurrentCompetition } from "../sagas/fetchData/interfaces";
+import type { ICompetitions, ICurrentCompetition } from "../sagas/competitions/interfaces";
+
+interface IPagination {
+    page: number,
+    limit: number
+}
 
 interface IFootbalData {
     readonly competitions: {
         readonly data: ICompetitions | null,
-        pagination: {
-            page: number,
-            limit: number
-        },
+        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string
@@ -16,6 +18,7 @@ interface IFootbalData {
     },
     readonly currentCompetition: {
         readonly data: ICurrentCompetition | null,
+        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string
@@ -37,6 +40,10 @@ const initialState = {
     },
     currentCompetition: {
         data: null,
+        pagination: {
+            page: 1,
+            limit: 7
+        },
         isLoading: false,
         error: {
             message: ""
@@ -125,6 +132,33 @@ const footbalData: Reducer<IFootbalData,IAction> = (state = initialState, action
                     ...state.currentCompetition,
                     error: {
                         message: action.payload
+                    }
+                }
+            }
+        }
+
+        case "CLEAR_CURRENT_COMPETITION": {
+            return {
+                ...state,
+                currentCompetition: {
+                    ...state.currentCompetition,
+                    data: null,
+                    isLoading: false,
+                    error: {
+                        message: ""
+                    }
+                }
+            }
+        }
+
+        case "SET_CURRENT_COMPETITION_PAGE": {
+            return {
+                ...state,
+                currentCompetition: {
+                    ...state.currentCompetition,
+                    pagination: {
+                        ...state.currentCompetition.pagination,
+                        page: action.payload,
                     }
                 }
             }

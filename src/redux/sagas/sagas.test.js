@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
 
 import { getCompetitionsData } from "../../api";
-import { getCompetitions } from "./fetchData/getCompetitionData";
+import { getCompetitions } from "./competitions/competitionData";
 
 describe("get data", () => {
     it("get competitions data", () => {
