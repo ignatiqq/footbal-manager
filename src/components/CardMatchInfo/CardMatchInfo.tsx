@@ -2,7 +2,7 @@ import React from 'react'
 
 import { formatToLocalDateString, formatToLocalTimeString } from '../../utils/dates';
 
-import type { ICurrentCompetitionMatch } from "../../redux/sagas/competitions/interfaces";
+import type { ICurrentCompetitionMatch } from "../../redux/reducers/competitions/competitionsDataInterfaces";
 
 interface ICardMatchInfo {
   item: ICurrentCompetitionMatch

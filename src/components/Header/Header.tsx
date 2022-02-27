@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { createSelector } from 'reselect';
 import type { RootState } from '../../redux/store';
 
-import { CHANGE_THEME } from '../../redux/actions/actionNames';
+import { CHANGE_THEME } from '../../redux/actions/globalSettings/actionNames';
 
 import logo from "../../assets/images/logo.png";
 import moonIcon from "../../assets/images/moonIcon.png";

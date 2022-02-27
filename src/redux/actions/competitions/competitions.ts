@@ -1,4 +1,4 @@
-import { ICompetitions, ICompetitionOne } from "../sagas/competitions/interfaces"
+import { ICompetitions, ICompetitionOne } from "../../reducers/competitions/competitionsDataInterfaces"
 import {
     CLEAR_CURRENT_COMPETITION,
     SET_COMPETITIONS,

@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
   
-import type { ICompetitionOne } from '../../redux/sagas/competitions/interfaces';
+import type { ICompetitionOne } from '../../redux/reducers/competitions/competitionsDataInterfaces';
 
 import { Search, Loader, CompetitionCard, Paginator } from '../../components';
-import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/actionNames';
+import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/competitions/actionNames';
 
 const Competitions: React.FC = () => {
     const [search, setSearch] = React.useState<string>("");
@@ -12,12 +12,12 @@ const Competitions: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { competitions, isLoading, error, pagination, theme } = useAppSelector((state) => ({
-        competitions: state.footbalData.competitions.data,
-        isLoading: state.footbalData.competitions.isLoading,
-        error: state.footbalData.competitions.error,
-        pagination: state.footbalData.competitions.pagination,
-        theme: state.globalSettings.theme
+    const { competitions, isLoading, error, pagination, theme } = useAppSelector(({competitionsData, globalSettings}) => ({
+        competitions: competitionsData.competitions.data,
+        isLoading: competitionsData.competitions.isLoading,
+        error: competitionsData.competitions.error,
+        pagination: competitionsData.competitions.pagination,
+        theme: globalSettings.theme
     }))
 
     React.useEffect(() => {
@@ -31,23 +31,6 @@ const Competitions: React.FC = () => {
             setSlicedData(sliced);
         }
     }, [competitions, pagination])
-
-    const paginateHandler = (page: number | string) => {
-        if(typeof page === "number") {
-            dispatch({type: CHANGE_COMPETITIONS_PAGE, payload: page})
-        }
-    }
-
-    const prevPageHanlder = () => {
-      if(pagination.page > 1) {
-        dispatch({type: CHANGE_COMPETITIONS_PAGE, payload: pagination.page - 1})
-      }
-    }
-
-    const nextPageHandler = () => {
-      if(pagination.page < Math.ceil(competitions!.count / pagination.limit))
-      dispatch({type: CHANGE_COMPETITIONS_PAGE, payload: pagination.page + 1})
-    }
 
     return (
       <div>
@@ -78,9 +61,8 @@ const Competitions: React.FC = () => {
         )}
         {competitions && competitions.count && pagination && (
           <Paginator
-            paginateHandler={paginateHandler}
-            nextPageHandler={nextPageHandler}
-            prevPageHanlder={prevPageHanlder}
+            paginateType={CHANGE_COMPETITIONS_PAGE}
+            pagination={pagination}
             position="center"
             count={competitions.count}
             limit={pagination.limit}

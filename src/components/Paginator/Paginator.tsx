@@ -1,9 +1,11 @@
 import React from 'react';
+import { useAppDispatch } from '../../redux/hooks';
 
 import { usePagination } from "../../hooks";
-
 import nextIcon from "../../assets/images/nextIcon.svg";
 import prevIcon from "../../assets/images/prevIcon.svg";
+
+import type { IPagination } from "../../redux/interfaces/globalInterfaces";
 
 interface IPaginator {
     count: number,
@@ -11,13 +13,37 @@ interface IPaginator {
     page: number,
     pageRange?: number,
     position?: "left" | "right" | "center",
-    paginateHandler: (page: number | string) => void,
-    prevPageHanlder: (data: React.MouseEvent<HTMLButtonElement >) => void,
-    nextPageHandler: (data: React.MouseEvent<HTMLButtonElement >) => void,
+    paginateType: string,
+    pagination: IPagination
 }
 
-const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", paginateHandler, prevPageHanlder, nextPageHandler }) => {
+const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", paginateType, pagination }) => {
     const [slicedPages] = usePagination(count, limit, page, pageRange);
+
+    const dispatch = useAppDispatch();
+  
+    const paginateHandler = (page: number | string) => {
+      if(typeof page === "number") {
+          dispatch({type: paginateType, payload: page})
+      }
+    }
+
+    const prevPageHanlder = () => {
+      if(pagination.page > 1) {
+        dispatch({type: paginateType, payload: pagination.page - 1})
+      }
+    }
+
+    const nextPageHandler = () => {
+      if(pagination.page < Math.ceil(count / pagination.limit))
+      dispatch({type: paginateType, payload: pagination.page + 1})
+    }
+
+    React.useEffect(() => {
+      if(page) {
+        window.scrollTo(0,0);
+      }
+    }, [page])
 
     return (
       <div className={`${

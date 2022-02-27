@@ -13,7 +13,7 @@ interface IDatepicker {
 
 const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) => {
     const [startDate, setStartDate] = React.useState<Date | null>();
-    const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate());
+    const [endDate, setEndDate] = React.useState<Date | null>(new Date("06-20-2018"));
 
     React.useEffect(() => {
         if(firstMatchDate) {
@@ -21,11 +21,19 @@ const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) 
         }
     }, [firstMatchDate])
 
-    React.useEffect(() => {
-        if(startDate && endDate) {
-            changeDataHandler(startDate, endDate)
+    const changeStartDate = (date: Date | null) => {
+        setStartDate(date);
+        if(endDate && date) {
+            changeDataHandler(date, endDate)
         }
-    }, [startDate, endDate])
+    }
+
+    const changeEndDate = (date: Date | null) => {
+        setEndDate(date);
+        if(startDate && date) {
+            changeDataHandler(startDate, date)
+        }
+    }
 
     const CustomDatePickerInput = React.forwardRef(({ value, onClick}: any, ref:ForwardedRef<HTMLButtonElement> ) => (
         <button ref={ref} onClick={onClick} className="text-zinc-50 bg-stone-700 text-lg rounded-sm placeholder:text-lg px-2 shadow-lg border mr-2">
@@ -39,14 +47,14 @@ const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) 
             <DatePicker
                 className="mb-20"
                 selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                onChange={(date) => changeStartDate(date)}
                 dateFormat="dd.MM.yyyy"
                 customInput={<CustomDatePickerInput/>}
             />
             <span className="mx-2">по</span>
             <DatePicker
                 selected={endDate ? endDate : startDate}
-                onChange={(date) => setEndDate(date)}
+                onChange={(date) => changeEndDate(date)}
                 dateFormat="dd.MM.yyyy"
                 customInput={<CustomDatePickerInput/>}
             />

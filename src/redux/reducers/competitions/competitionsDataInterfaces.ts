@@ -1,3 +1,5 @@
+import type { IPagination } from "../../interfaces/globalInterfaces";
+
 export interface ICompetitions {
     data: any;
     competitions: Array<ICompetitionOne>,
@@ -70,4 +72,22 @@ export interface ICurrentCompetition {
         filters: object,
         competition: ICompetitionOne,
         matches: Array<ICurrentCompetitionMatch>
+}
+export interface ICompetitionsData {
+    readonly competitions: {
+        readonly data: ICompetitions | null,
+        pagination: IPagination,
+        isLoading: boolean,
+        error: {
+            message: string
+        },
+    },
+    readonly currentCompetition: {
+        readonly data: ICurrentCompetition | null,
+        pagination: IPagination,
+        isLoading: boolean,
+        error: {
+            message: string
+        }
+    }
 }

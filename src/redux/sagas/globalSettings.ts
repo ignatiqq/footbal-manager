@@ -1,6 +1,6 @@
 import { select, put, takeEvery } from "redux-saga/effects";
 
-import { CHANGE_THEME, SET_THEME } from "../actions/actionNames"
+import { CHANGE_THEME, SET_THEME } from "../actions/globalSettings/actionNames";
 
 function* changeTheme() {
     const theme: string = yield select((state) => state.globalSettings.theme)

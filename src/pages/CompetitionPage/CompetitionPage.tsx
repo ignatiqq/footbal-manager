@@ -2,10 +2,11 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
-import { GET_CURRENT_COMPETITION, CHANGE_CURRENT_COMPETITION_PAGE } from '../../redux/actions/actionNames';
+import { GET_CURRENT_COMPETITION, CHANGE_CURRENT_COMPETITION_PAGE } from '../../redux/actions/competitions/actionNames';
 import {Datepicker, Loader, Paginator, CardMatchInfo} from "../../components";
+import { formatDateToRequest } from '../../utils/dates';
 
-import type { ICurrentCompetitionMatch } from "../../redux/sagas/competitions/interfaces";
+import type { ICurrentCompetitionMatch } from '../../redux/reducers/competitions/competitionsDataInterfaces';
 
 const CompetitionPage: React.FC = () => {
     const [slicedData, setSlicedData] = React.useState<Array<ICurrentCompetitionMatch>>();
@@ -14,16 +15,16 @@ const CompetitionPage: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { currentCompetitionData, pagination, isLoading, error } = useAppSelector(({footbalData}) => ({
-        currentCompetitionData: footbalData.currentCompetition.data,
-        pagination: footbalData.currentCompetition.pagination,
-        isLoading: footbalData.currentCompetition.isLoading,
-        error: footbalData.currentCompetition.error
+    const { currentCompetitionData, pagination, isLoading, error } = useAppSelector(({competitionsData}) => ({
+        currentCompetitionData: competitionsData.currentCompetition.data,
+        pagination: competitionsData.currentCompetition.pagination,
+        isLoading: competitionsData.currentCompetition.isLoading,
+        error: competitionsData.currentCompetition.error
     }))
 
     React.useEffect(() => {
         if(id) {
-            dispatch({type: GET_CURRENT_COMPETITION, payload: id})
+            dispatch({type: GET_CURRENT_COMPETITION, payload: {id: id}})
         }
     }, [id])
 
@@ -34,25 +35,8 @@ const CompetitionPage: React.FC = () => {
         }
     }, [currentCompetitionData, pagination])
 
-    const getCurrentCompetitionByDate = (date: Date) => {
-      console.log(date)
-    }
-
-    const paginateHandler = (page: number | string) => {
-        if(typeof page === "number") {
-            dispatch({type: CHANGE_CURRENT_COMPETITION_PAGE, payload: page})
-        }
-    }
-
-    const prevPageHanlder = () => {
-      if(pagination.page > 1) {
-        dispatch({type: CHANGE_CURRENT_COMPETITION_PAGE, payload: pagination.page - 1})
-      }
-    }
-
-    const nextPageHandler = () => {
-      if(pagination.page < Math.ceil(currentCompetitionData!.count / pagination.limit))
-      dispatch({type: CHANGE_CURRENT_COMPETITION_PAGE, payload: pagination.page + 1})
+    const getCurrentCompetitionByDate = (dateFrom: Date, dateTo: Date) => {
+      dispatch({type: GET_CURRENT_COMPETITION, payload: {id: id, dateFrom: formatDateToRequest(dateFrom), dateTo: formatDateToRequest(dateTo)}});
     }
 
     return (
@@ -96,9 +80,8 @@ const CompetitionPage: React.FC = () => {
         </div>
         {currentCompetitionData && currentCompetitionData.count && pagination && (
           <Paginator
-            paginateHandler={paginateHandler}
-            nextPageHandler={nextPageHandler}
-            prevPageHanlder={prevPageHanlder}
+            paginateType={CHANGE_CURRENT_COMPETITION_PAGE}
+            pagination={pagination}
             position="center"
             count={currentCompetitionData.count}
             limit={pagination.limit}

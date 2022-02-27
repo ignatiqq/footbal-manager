@@ -1,0 +1,8 @@
+// TEAMS
+
+export const GET_TEAMS_DATA = "GET_TEAMS_DATA";
+export const SET_TEAMS_DATA = "SET_TEAMS_DATA";
+export const SET_TEAMS_LOADING = "SET_TEAMS_LOADING";
+export const SET_TEAMS_ERROR = "SET_TEAMS_ERROR";
+export const CHANGE_TEAMS_PAGE = "CHANGE_TEAMS_PAGE";
+export const SET_TEAMS_PAGE = "SET_TEAMS_PAGE";

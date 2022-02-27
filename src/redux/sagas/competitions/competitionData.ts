@@ -1,8 +1,7 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put, takeEvery } from "redux-saga/effects";
 
-import type { IApiRequestError } from "../../interfaces/api";
-import type { IAction } from "../../interfaces/reducer";
-import type { ICompetitions } from "./interfaces";
+import type { IAction, IApiRequestError } from "../../interfaces/globalInterfaces";
+import type { ICompetitions } from "../../reducers/competitions/competitionsDataInterfaces";
 
 import { getCompetitionsData } from "../../../api/index";
 import { 
@@ -12,7 +11,7 @@ import {
     SET_COMPETITIONS_ERROR, 
     SET_COMPETITIONS_LOADING, 
     SET_COMPETITIONS_PAGE 
-} from "../../actions/actionNames";
+} from "../../actions/competitions/actionNames";
 
 export function *getCompetitions() {
     try {
@@ -41,5 +40,5 @@ function *competitionsPagination(action: IAction) {
 
 export function *getCompetitionDataWatcher() {
     yield takeLatest(GET_COMPETITIONS_DATA, getCompetitions);
-    yield takeLatest(CHANGE_COMPETITIONS_PAGE, competitionsPagination);
+    yield takeEvery(CHANGE_COMPETITIONS_PAGE, competitionsPagination);
 }

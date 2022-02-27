@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import { Header } from "./components/index";
-import { Competitions, PageNotFound, CompetitionPage } from "./pages";
+import { Competitions, PageNotFound, CompetitionPage, Teams } from "./pages";
 
 function App() {
   return (
@@ -13,7 +13,8 @@ function App() {
             <Route path="/" element={<Competitions />} />
             <Route path="/:id/matches" element={<CompetitionPage />} />
             <Route path="/leagues" element={<Competitions />} />
-            <Route path="/teams" element={<div>123</div>} />
+            <Route path="/teams" element={<Teams/>} />
+            <Route path="/teams/:id/matches" element={<div>123</div>} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
       </div>

@@ -1,30 +1,7 @@
-import type { IAction } from "../interfaces/reducer";
 import type { Reducer } from "redux";
-import type { ICompetitions, ICurrentCompetition } from "../sagas/competitions/interfaces";
 
-interface IPagination {
-    page: number,
-    limit: number
-}
-
-interface IFootbalData {
-    readonly competitions: {
-        readonly data: ICompetitions | null,
-        pagination: IPagination,
-        isLoading: boolean,
-        error: {
-            message: string
-        },
-    },
-    readonly currentCompetition: {
-        readonly data: ICurrentCompetition | null,
-        pagination: IPagination,
-        isLoading: boolean,
-        error: {
-            message: string
-        }
-    }
-}
+import type { IAction } from "../../interfaces/globalInterfaces";
+import type { ICompetitionsData } from "./competitionsDataInterfaces";
 
 const initialState = {
     competitions: {
@@ -51,7 +28,7 @@ const initialState = {
     }
 }
 
-const footbalData: Reducer<IFootbalData,IAction> = (state = initialState, action): IFootbalData => {
+const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialState, action): ICompetitionsData => {
     switch (action.type) {
     
         case "SET_COMPETITIONS": {
@@ -168,4 +145,4 @@ const footbalData: Reducer<IFootbalData,IAction> = (state = initialState, action
     }
 }
 
-export default footbalData;
+export default competitionsData;

@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 
 import globalSettings from "./globalSettings";
-import footbalData from "./footbalData";
+import competitionsData from "./competitions/competitionsData";
+import teamsData from "./teams/teamsData";
 
 const rootReducer = combineReducers({
     globalSettings,
-    footbalData,
+    competitionsData,
+    teamsData
 })
 
 export default rootReducer;

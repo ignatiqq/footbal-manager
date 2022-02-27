@@ -1,4 +1,4 @@
-import type { IAction } from "../interfaces/reducer";
+import type { IAction } from "../interfaces/globalInterfaces";
 import type { Reducer } from "redux";
 
 export interface IGlobalSettings {
