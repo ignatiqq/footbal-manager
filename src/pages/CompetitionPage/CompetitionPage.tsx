@@ -6,10 +6,12 @@ import { GET_CURRENT_COMPETITION, CHANGE_CURRENT_COMPETITION_PAGE } from '../../
 import {Datepicker, Loader, Paginator, CardMatchInfo} from "../../components";
 import { formatDateToRequest } from '../../utils/dates';
 
-import type { ICurrentCompetitionMatch } from '../../redux/reducers/competitions/competitionsDataInterfaces';
+import type { IMatchInfo } from '../../redux/reducers/competitions/competitionsDataInterfaces';
+
+import sadEmoji from "../../assets/images/sadEmoji.png";
 
 const CompetitionPage: React.FC = () => {
-    const [slicedData, setSlicedData] = React.useState<Array<ICurrentCompetitionMatch>>();
+    const [slicedData, setSlicedData] = React.useState<Array<IMatchInfo>>();
 
     const { id } = useParams();
 
@@ -53,14 +55,18 @@ const CompetitionPage: React.FC = () => {
           </div>
           <div className="font-bold mb-4">Матчи</div>
           <div>
+           {currentCompetitionData && currentCompetitionData.matches.length ? 
             <Datepicker
               changeDataHandler={getCurrentCompetitionByDate}
               firstMatchDate={currentCompetitionData && currentCompetitionData.matches[0].utcDate}
             />
+            :
+            <div></div>
+          }
           </div>
         </div>
         <div>
-          {!currentCompetitionData && isLoading ? (
+          {isLoading ? (
             <div className="flex justify-center items-center min-h-[60vh]">
               <Loader />
             </div>
@@ -68,17 +74,26 @@ const CompetitionPage: React.FC = () => {
             <div className="flex justify-center items-center font-bold text-red-500 min-h-[60vh] text-center">
               {error.message}
             </div>
-          ) : (
+          ) : !isLoading && currentCompetitionData?.matches.length ? (
             <div className="flex flex-col items-center justify-evenly flex-wrap my-14">
               {slicedData &&
                 slicedData.length > 0 &&
-                slicedData.map((item: ICurrentCompetitionMatch) => (
+                slicedData.map((item: IMatchInfo) => (
                   <CardMatchInfo key={item.id} item={item} />
                 ))}
             </div>
-          )}
+          )
+          : (
+            <div className="flex flex-col justify-center items-center min-h-[60vh] text-center">
+              <div className='font-bold mb-4'>К сожалению не нашлось ни одного матча</div>
+              <div className='max-w-[60px]'>
+                <img src={sadEmoji} alt="404" />
+              </div>
+            </div>
+          )
+        }
         </div>
-        {currentCompetitionData && currentCompetitionData.count && pagination && (
+        {currentCompetitionData && currentCompetitionData.count && pagination ? (
           <Paginator
             paginateType={CHANGE_CURRENT_COMPETITION_PAGE}
             pagination={pagination}
@@ -87,7 +102,10 @@ const CompetitionPage: React.FC = () => {
             limit={pagination.limit}
             page={pagination.page}
           />
-        )}
+        )
+        :
+        <div></div>
+      }
       </div>
     );
 }

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import type { ICompetitionOne } from '../../redux/reducers/competitions/competitionsDataInterfaces';
 
 import { Search, Loader, CompetitionCard, Paginator } from '../../components';
-import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/competitions/actionNames';
+import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION, SEARCH_COMPETITIONS} from '../../redux/actions/competitions/actionNames';
 
 const Competitions: React.FC = () => {
     const [search, setSearch] = React.useState<string>("");
@@ -26,11 +26,15 @@ const Competitions: React.FC = () => {
     }, []);
 
     React.useEffect(() => {
-        if(competitions) {
+        if(competitions && competitions.competitions) {
             const sliced = competitions.competitions.slice((pagination.page - 1) * pagination.limit, pagination.limit * pagination.page);
             setSlicedData(sliced);
         }
-    }, [competitions, pagination])
+    }, [competitions, pagination]);
+
+    React.useEffect(() => {
+      dispatch({type: SEARCH_COMPETITIONS, payload: search})
+    }, [search])
 
     return (
       <div>

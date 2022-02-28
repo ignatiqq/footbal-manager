@@ -2,7 +2,9 @@ import {
     SET_TEAMS_DATA, 
     SET_TEAMS_LOADING, 
     SET_TEAMS_ERROR, 
-    SET_TEAMS_PAGE 
+    SET_TEAMS_PAGE, 
+    SET_TEAM_BY_ID_LOADING,
+    SET_TEAM_BY_ID_ERROR
 } from "./actionNames";
 import type { ITeams } from "../../reducers/teams/teamsDataInterfaces";
 
@@ -23,5 +25,15 @@ export const setTeamsError = (data: string) => ({
 
 export const setTeamsPage = (data: number) => ({
     type: SET_TEAMS_PAGE,
+    payload: data
+})
+
+export const setTeamByIdLoading = (data: boolean) => ({
+    type: SET_TEAM_BY_ID_LOADING,
+    payload: data
+})
+
+export const setTeamByIdError = (data: string) => ({
+    type: SET_TEAM_BY_ID_ERROR,
     payload: data
 })

@@ -3,7 +3,7 @@ import React, { ChangeEvent } from 'react';
 import { Search, Loader, TeamCard, Paginator } from '../../components';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 
-import { GET_TEAMS_DATA, CHANGE_TEAMS_PAGE } from '../../redux/actions/teams/actionNames';
+import { GET_TEAMS_DATA, CHANGE_TEAMS_PAGE, CLEAR_CURRENT_TEAM } from '../../redux/actions/teams/actionNames';
 import type { ITeamOne } from '../../redux/reducers/teams/teamsDataInterfaces';
 
 const Teams: React.FC = () => {
@@ -20,11 +20,14 @@ const Teams: React.FC = () => {
         theme: globalSettings.theme
     }))
 
-    console.log(slicedData)
+    React.useEffect(() => {
+        dispatch({type: GET_TEAMS_DATA});
+        dispatch({type: CLEAR_CURRENT_TEAM})
+    }, []);
 
     React.useEffect(() => {
-        dispatch({type: GET_TEAMS_DATA})
-    }, []);
+
+    }, [])
 
     React.useEffect(() => {
         if(teams) {

@@ -3,6 +3,19 @@ import type { Reducer } from "redux";
 import type { IAction } from "../../interfaces/globalInterfaces";
 import type { ICompetitionsData } from "./competitionsDataInterfaces";
 
+import { 
+    SET_COMPETITIONS,
+    SET_COMPETITIONS_LOADING,
+    SET_COMPETITIONS_ERROR,
+    SET_COMPETITIONS_PAGE,
+    SET_CURRENT_COMPETITION,
+    SET_CURRENT_COMPETITION_LOADING,
+    SET_CURRENT_COMPETITION_ERROR,
+    CLEAR_CURRENT_COMPETITION,
+    SET_CURRENT_COMPETITION_PAGE,
+    SEARCH_COMPETITIONS
+} from "../../actions/competitions/actionNames";
+
 const initialState = {
     competitions: {
         data: null,
@@ -31,7 +44,7 @@ const initialState = {
 const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialState, action): ICompetitionsData => {
     switch (action.type) {
     
-        case "SET_COMPETITIONS": {
+        case SET_COMPETITIONS: {
             return {
                 ...state,
                 competitions: {
@@ -44,7 +57,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_COMPETITIONS_LOADING": {
+        case SET_COMPETITIONS_LOADING: {
             return {
                 ...state,
                 competitions: {
@@ -54,7 +67,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_COMPETITIONS_ERROR": {
+        case SET_COMPETITIONS_ERROR: {
             return {
                 ...state,
                 competitions: {
@@ -66,7 +79,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_COMPETITIONS_PAGE": {
+        case SET_COMPETITIONS_PAGE: {
             return {
                 ...state,
                 competitions: {
@@ -79,7 +92,29 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_CURRENT_COMPETITION": {
+        case SEARCH_COMPETITIONS: {
+
+            let filtered: any = [];
+
+            if(state.competitions.data && state.competitions.data.competitions) {
+                filtered = state.competitions.data?.competitions.filter((item) => item.name.toLowerCase().includes(action.payload.toLowerCase()))
+            }
+
+                return {
+                    ...state,
+                    competitions: {
+                        ...state.competitions,
+                        data: {
+                            ...state.competitions.data,
+                            competitions: filtered,
+                            count: filtered.length,
+                            filters: action.payload
+                        }
+                    }
+                }
+        }
+
+        case SET_CURRENT_COMPETITION: {
             return {
                 ...state,
                 currentCompetition: {
@@ -92,7 +127,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_CURRENT_COMPETITION_LOADING": {
+        case SET_CURRENT_COMPETITION_LOADING: {
             return {
                 ...state,
                 currentCompetition: {
@@ -102,7 +137,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_CURRENT_COMPETITION_ERROR": {
+        case SET_CURRENT_COMPETITION_ERROR: {
             return {
                 ...state,
                 currentCompetition: {
@@ -114,7 +149,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "CLEAR_CURRENT_COMPETITION": {
+        case CLEAR_CURRENT_COMPETITION: {
             return {
                 ...state,
                 currentCompetition: {
@@ -128,7 +163,7 @@ const competitionsData: Reducer<ICompetitionsData,IAction> = (state = initialSta
             }
         }
 
-        case "SET_CURRENT_COMPETITION_PAGE": {
+        case SET_CURRENT_COMPETITION_PAGE: {
             return {
                 ...state,
                 currentCompetition: {

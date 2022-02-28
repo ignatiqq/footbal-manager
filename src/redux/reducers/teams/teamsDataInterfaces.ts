@@ -1,4 +1,5 @@
 import type { IPagination } from "../../interfaces/globalInterfaces";
+import type { IMatchInfo } from "../competitions/competitionsDataInterfaces";
 
 export interface ITeamsData {
     readonly teams: {
@@ -8,7 +9,16 @@ export interface ITeamsData {
         error: {
             message: string
         },
-    }
+    },
+    readonly currentTeamMatches: {
+        readonly data: ICurrentTeam | null,
+        pagination: IPagination,
+        isLoading: boolean,
+        error: {
+            message: string
+        },
+    },
+    teamById: ITeamById
 }
 
 export interface ITeams {
@@ -19,6 +29,19 @@ export interface ITeams {
     },
     teams: Array<ITeamOne> 
 }
+
+export interface ICurrentTeam {
+    count: number,
+    filters: {
+        permission: string,
+        limit: number
+    },
+    matches: Array<IMatchInfo>
+}
+
+
+
+// current team
 
 export interface ITeamOne {
     addres: string,
@@ -38,5 +61,33 @@ export interface ITeamOne {
     tla: string,
     venue: string,
     website: string
+}
 
+// TEAM BY ID
+
+export interface ITeamById {
+    data: null | ITeamByIdOne,
+    isLoading: boolean,
+    error: {
+        message: string
+    }
+}
+
+export interface ITeamByIdOne {
+    id: number,
+    area: {
+        id: number,
+        name: string
+    },
+    name: string,
+    shortName: string,
+    tla: string,
+    crestUrl: string,
+    address:string,
+    phone: string,
+    website: string,
+    email: string,
+    founded: number,
+    clubColors: string,
+    venue: string,
 }

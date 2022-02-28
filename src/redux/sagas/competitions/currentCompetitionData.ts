@@ -13,9 +13,7 @@ import {
     SET_CURRENT_COMPETITION_PAGE
 } from "../../actions/competitions/actionNames";
 
-
-
-export function *getCurrentCompetition(action:IAction) {
+export function *getCurrentCompetitionData(action:IAction) {
     try {
         yield put({type: SET_CURRENT_COMPETITION_LOADING, payload: true});
 
@@ -41,6 +39,6 @@ function *currentCompetitionPagination(action: IAction) {
 }
 
 export function *getCurrentCompetitionWatcher() {
-    yield takeLatest(GET_CURRENT_COMPETITION, getCurrentCompetition);
+    yield takeLatest(GET_CURRENT_COMPETITION, getCurrentCompetitionData);
     yield takeEvery(CHANGE_CURRENT_COMPETITION_PAGE, currentCompetitionPagination);
 }

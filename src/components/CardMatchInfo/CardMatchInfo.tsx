@@ -2,10 +2,11 @@ import React from 'react'
 
 import { formatToLocalDateString, formatToLocalTimeString } from '../../utils/dates';
 
-import type { ICurrentCompetitionMatch } from "../../redux/reducers/competitions/competitionsDataInterfaces";
+import type { IMatchInfo } from "../../redux/reducers/competitions/competitionsDataInterfaces";
+import { ITeamOne } from '../../redux/reducers/teams/teamsDataInterfaces';
 
 interface ICardMatchInfo {
-  item: ICurrentCompetitionMatch
+  item: IMatchInfo
 }
 
 const CardMatchInfo: React.FC<ICardMatchInfo> = ({item}) => {

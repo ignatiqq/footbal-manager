@@ -1,6 +1,8 @@
 import type { IAction } from "../interfaces/globalInterfaces";
 import type { Reducer } from "redux";
 
+import { SET_THEME } from "../actions/globalSettings/actionNames";
+
 export interface IGlobalSettings {
     theme: string | null
 }
@@ -12,7 +14,7 @@ const initialState = {
 const globalSettings: Reducer<IGlobalSettings, IAction> = (state = initialState, action): IGlobalSettings => {
     switch (action.type) {
 
-        case "SET_THEME": {
+        case SET_THEME: {
             return {    
                 ...state,
                 theme: action.payload

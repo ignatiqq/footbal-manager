@@ -1,10 +1,9 @@
 import type { IPagination } from "../../interfaces/globalInterfaces";
 
 export interface ICompetitions {
-    data: any;
-    competitions: Array<ICompetitionOne>,
+    competitions: Array<ICompetitionOne> | undefined,
     count: number,
-    filters: object
+    filters: object | string
 }
 
 export interface ICompetitionOne {
@@ -21,7 +20,7 @@ export interface ICompetitionOne {
 
 // current competition interfaces
 
-export interface ICurrentCompetitionMatch {
+export interface IMatchInfo {
     id: number,
     season: {
         id: number,
@@ -71,7 +70,7 @@ export interface ICurrentCompetition {
         count: number,
         filters: object,
         competition: ICompetitionOne,
-        matches: Array<ICurrentCompetitionMatch>
+        matches: Array<IMatchInfo>
 }
 export interface ICompetitionsData {
     readonly competitions: {

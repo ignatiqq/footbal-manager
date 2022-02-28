@@ -13,7 +13,7 @@ interface IDatepicker {
 
 const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) => {
     const [startDate, setStartDate] = React.useState<Date | null>();
-    const [endDate, setEndDate] = React.useState<Date | null>(new Date("06-20-2018"));
+    const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate());
 
     React.useEffect(() => {
         if(firstMatchDate) {

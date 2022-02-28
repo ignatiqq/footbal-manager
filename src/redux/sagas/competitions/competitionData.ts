@@ -21,8 +21,8 @@ export function *getCompetitions() {
 
         const data: IApiRequestError | ICompetitions = yield call([response, response.json]);
 
-        if("error" in data) {
-            throw new Error(`Произошла ошибка ${data.error}: ${data.message}`)
+        if("error" in data || "errorCode" in data) {
+            throw new Error(`Произошла ошибка ${data.error ? data.error : data.errorCode}: ${data.message}`);
         }
 
         yield put({type: SET_COMPETITIONS, payload: data})
