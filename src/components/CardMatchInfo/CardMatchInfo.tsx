@@ -17,12 +17,12 @@ const CardMatchInfo: React.FC<ICardMatchInfo> = ({item}) => {
         <div>{formatToLocalTimeString(item.utcDate)}</div>
       </div>
       <div className='basis-1/4 basis-[10%] md:my-2 mr-4 md:mr-0'>{item.status}</div>
-      <div className='basis-1/4 flex w-full items-center justify-between basis-[35%] md:my-2 mr-4 md:mr-0'>
+      <div className='basis-1/4 flex w-full items-center justify-between basis-[37%] md:my-2 mr-4 md:mr-0'>
         <div>{item.homeTeam.name}</div>
         <div>-</div>
         <div>{item.awayTeam.name}</div>
       </div>
-      <div className='basis-1/4 flex items-center justify-between flex-wrap basis-[20%] md:my-2'>
+      <div className='basis-1/4 flex items-center justify-between flex-wrap basis-[17%] md:my-2'>
         {item.score.fullTime.homeTeam !== null && (
           <div className="flex md:mr-4">
             <div>{item.score.fullTime.homeTeam}</div>
