@@ -2,21 +2,28 @@ import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
   
 import type { ICompetitionOne } from '../../redux/reducers/competitions/competitionsDataInterfaces';
+import type { IPagination } from '../../components/Paginator/interfaces';
 
 import { Search, Loader, CompetitionCard, Paginator } from '../../components';
-import { GET_COMPETITIONS_DATA, CHANGE_COMPETITIONS_PAGE, CLEAR_CURRENT_COMPETITION, SEARCH_COMPETITIONS} from '../../redux/actions/competitions/actionNames';
+import { GET_COMPETITIONS_DATA, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/competitions/actionNames';
+
+import searchIcon from "../../assets/images/searchIcon.svg";
 
 const Competitions: React.FC = () => {
-    const [search, setSearch] = React.useState<string>("");
     const [slicedData, setSlicedData] = React.useState<Array<ICompetitionOne>>();
+    const [pagination, setPagination] = React.useState<IPagination>({
+      page: 1,
+      limit: 9
+    });
+    const [filteredData, setFilteredData] = React.useState<Array<ICompetitionOne>>();
+    const [filter, setFilter] = React.useState<string>("");
 
     const dispatch = useAppDispatch();
 
-    const { competitions, isLoading, error, pagination, theme } = useAppSelector(({competitionsData, globalSettings}) => ({
+    const { competitions, isLoading, error, theme } = useAppSelector(({competitionsData, globalSettings}) => ({
         competitions: competitionsData.competitions.data,
         isLoading: competitionsData.competitions.isLoading,
         error: competitionsData.competitions.error,
-        pagination: competitionsData.competitions.pagination,
         theme: globalSettings.theme
     }))
 
@@ -32,19 +39,24 @@ const Competitions: React.FC = () => {
         }
     }, [competitions, pagination]);
 
-    React.useEffect(() => {
-      dispatch({type: SEARCH_COMPETITIONS, payload: search})
-    }, [search])
+    const filterDataHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      setFilter(e.target.value)
+    }
 
     return (
       <div>
         <div className="my-6">
-          <Search
-            theme={theme}
-            value={search}
-            placeholder="Поиск матчей"
-            changeHandler={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-          />
+          <div className='flex items-center'>
+            <Search
+              theme={theme}
+              value={filter}
+              placeholder="Поиск матчей"
+              changeHandler={filterDataHandler}
+            />
+            <button>
+              <img className="max-w-[32px] w-full" src={searchIcon} alt="search" />
+            </button>
+          </div>
         </div>
         {!competitions && isLoading ? (
           <div className="flex justify-center items-center min-h-[60vh]">
@@ -65,7 +77,7 @@ const Competitions: React.FC = () => {
         )}
         {competitions && competitions.count && pagination && (
           <Paginator
-            paginateType={CHANGE_COMPETITIONS_PAGE}
+            setPagination={setPagination}
             pagination={pagination}
             position="center"
             count={competitions.count}

@@ -2,24 +2,28 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
-import { GET_CURRENT_COMPETITION, CHANGE_CURRENT_COMPETITION_PAGE } from '../../redux/actions/competitions/actionNames';
+import { GET_CURRENT_COMPETITION } from '../../redux/actions/competitions/actionNames';
 import {Datepicker, Loader, Paginator, CardMatchInfo} from "../../components";
 import { formatDateToRequest } from '../../utils/dates';
 
 import type { IMatchInfo } from '../../redux/reducers/competitions/competitionsDataInterfaces';
+import type { IPagination } from '../../components/Paginator/interfaces';
 
 import sadEmoji from "../../assets/images/sadEmoji.png";
 
 const CompetitionPage: React.FC = () => {
     const [slicedData, setSlicedData] = React.useState<Array<IMatchInfo>>();
+    const [pagination, setPagination] = React.useState<IPagination>({
+      page: 1,
+      limit: 7
+    });
 
     const { id } = useParams();
 
     const dispatch = useAppDispatch();
 
-    const { currentCompetitionData, pagination, isLoading, error } = useAppSelector(({competitionsData}) => ({
+    const { currentCompetitionData, isLoading, error } = useAppSelector(({competitionsData}) => ({
         currentCompetitionData: competitionsData.currentCompetition.data,
-        pagination: competitionsData.currentCompetition.pagination,
         isLoading: competitionsData.currentCompetition.isLoading,
         error: competitionsData.currentCompetition.error
     }))
@@ -54,11 +58,11 @@ const CompetitionPage: React.FC = () => {
             )}
           </div>
           <div className="font-bold mb-4">Матчи</div>
-          <div>
-           {currentCompetitionData && currentCompetitionData.matches.length ? 
+          <div> 
+          {!error.message && !isLoading ? 
             <Datepicker
               changeDataHandler={getCurrentCompetitionByDate}
-              firstMatchDate={currentCompetitionData && currentCompetitionData.matches[0].utcDate}
+              firstMatch={currentCompetitionData && currentCompetitionData!.matches[0]}
             />
             :
             <div></div>
@@ -95,7 +99,7 @@ const CompetitionPage: React.FC = () => {
         </div>
         {currentCompetitionData && currentCompetitionData.count && pagination ? (
           <Paginator
-            paginateType={CHANGE_CURRENT_COMPETITION_PAGE}
+            setPagination={setPagination}
             pagination={pagination}
             position="center"
             count={currentCompetitionData.count}

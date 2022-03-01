@@ -1,5 +1,3 @@
-import type { IPagination } from "../../interfaces/globalInterfaces";
-
 export interface ICompetitions {
     competitions: Array<ICompetitionOne> | undefined,
     count: number,
@@ -75,7 +73,6 @@ export interface ICurrentCompetition {
 export interface ICompetitionsData {
     readonly competitions: {
         readonly data: ICompetitions | null,
-        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string
@@ -83,7 +80,6 @@ export interface ICompetitionsData {
     },
     readonly currentCompetition: {
         readonly data: ICurrentCompetition | null,
-        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string

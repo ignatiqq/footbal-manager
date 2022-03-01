@@ -7,11 +7,9 @@ import {
     SET_TEAMS_DATA, 
     SET_TEAMS_LOADING, 
     SET_TEAMS_ERROR, 
-    SET_TEAMS_PAGE,
     SET_CURRENT_TEAM,
     SET_CURRENT_TEAM_ERROR,
     SET_CURRENT_TEAM_LOADING,
-    SET_CURRENT_TEAM_PAGE,
     SET_TEAM_BY_ID,
     SET_TEAM_BY_ID_LOADING,
     SET_TEAM_BY_ID_ERROR,
@@ -22,10 +20,6 @@ import {
 const initialState = {
     teams: {
         data: null,
-        pagination: {
-            page: 1,
-            limit: 10
-        },
         isLoading: false,
         error: {
             message: ""
@@ -33,10 +27,6 @@ const initialState = {
     },
     currentTeamMatches: {
         data: null,
-        pagination: {
-            page: 1,
-            limit: 7
-        },
         isLoading: false,
         error: {
             message: ""
@@ -91,19 +81,6 @@ const teamsData: Reducer<ITeamsData, IAction> = (state = initialState, action): 
             }
         }
 
-        case SET_TEAMS_PAGE: {
-            return {
-                ...state,
-                teams: {
-                    ...state.teams,
-                    pagination: {
-                        ...state.teams.pagination,
-                        page: action.payload
-                    }
-                }
-            }
-        }
-
         case SET_TEAMS_DATA: {
             return {
                 ...state,
@@ -137,19 +114,6 @@ const teamsData: Reducer<ITeamsData, IAction> = (state = initialState, action): 
                         message: action.payload
                     },
                     isLoading: false
-                }
-            }
-        }
-
-        case SET_TEAMS_PAGE: {
-            return {
-                ...state,
-                teams: {
-                    ...state.teams,
-                    pagination: {
-                        ...state.teams.pagination,
-                        page: action.payload
-                    }
                 }
             }
         }
@@ -191,29 +155,12 @@ const teamsData: Reducer<ITeamsData, IAction> = (state = initialState, action): 
             }
         }
 
-        case SET_CURRENT_TEAM_PAGE: {
-            return {
-                ...state,
-                currentTeamMatches: {
-                    ...state.currentTeamMatches,
-                    pagination: {
-                        ...state.currentTeamMatches.pagination,
-                        page: action.payload
-                    }
-                }
-            }
-        }
-
         case CLEAR_CURRENT_TEAM: {
             return {
                 ...state,
                 currentTeamMatches: {
                     ...state.currentTeamMatches,
                     data: null,
-                    pagination: {
-                        ...state.currentTeamMatches.pagination,
-                        page: 1
-                    },
                     isLoading: false,
                     error: {
                         message: ""

@@ -1,7 +1,5 @@
 import React, { ChangeEvent } from 'react';
 
-import searchIcon from "../../assets/images/searchIcon.svg";
-
 interface ISearchProps {
     placeholder?: string,
     changeHandler: (e: ChangeEvent<HTMLInputElement>) => void,
@@ -19,9 +17,6 @@ const Search: React.FC<ISearchProps> = ({changeHandler, placeholder, value, them
         value={value}
         onChange={changeHandler}
         placeholder={placeholder ? placeholder : 'Поиск'} />
-        <button>
-          <img className="max-w-[32px] w-full" src={searchIcon} alt="search" />
-        </button>
     </div>
   );
 }

@@ -1,11 +1,10 @@
 import React from 'react';
-import { useAppDispatch } from '../../redux/hooks';
 
 import { usePagination } from "../../hooks";
 import nextIcon from "../../assets/images/nextIcon.svg";
 import prevIcon from "../../assets/images/prevIcon.svg";
 
-import type { IPagination } from "../../redux/interfaces/globalInterfaces";
+import type { IPagination } from "./interfaces";
 
 interface IPaginator {
     count: number,
@@ -13,30 +12,44 @@ interface IPaginator {
     page: number,
     pageRange?: number,
     position?: "left" | "right" | "center",
-    paginateType: string,
-    pagination: IPagination
+    pagination: IPagination,
+    setPagination: React.Dispatch<React.SetStateAction<IPagination>>
 }
 
-const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", paginateType, pagination }) => {
+const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", pagination, setPagination }) => {
     const [slicedPages] = usePagination(count, limit, page, pageRange);
-
-    const dispatch = useAppDispatch();
   
     const paginateHandler = (page: number | string) => {
       if(typeof page === "number") {
-          dispatch({type: paginateType, payload: page})
+        setPagination((prev) => {
+          return {
+            ...prev,
+            page: page
+          }
+        })
       }
     }
 
     const prevPageHanlder = () => {
       if(pagination.page > 1) {
-        dispatch({type: paginateType, payload: pagination.page - 1})
+        setPagination((prev) => {
+          return {
+            ...prev,
+            page: prev.page - 1
+          }
+        })
       }
     }
 
     const nextPageHandler = () => {
-      if(pagination.page < Math.ceil(count / pagination.limit))
-      dispatch({type: paginateType, payload: pagination.page + 1})
+      if(pagination.page < Math.ceil(count / pagination.limit)) {
+        setPagination((prev) => {
+          return {
+            ...prev,
+            page: prev.page + 1
+          }
+        })
+      }
     }
 
     React.useEffect(() => {

@@ -5,8 +5,6 @@ import {
     SET_TEAMS_LOADING, 
     SET_TEAMS_DATA, 
     SET_TEAMS_ERROR, 
-    CHANGE_TEAMS_PAGE,
-    SET_TEAMS_PAGE
 } from "../../actions/teams/actionNames";
 import type { IAction, IApiRequestError } from "../../interfaces/globalInterfaces";
 import getTeamsData from "../../../api/routes/getTeamsData";
@@ -31,11 +29,6 @@ export function *getTeams() {
     }
 }
 
-function *changeTeamsPage(action:IAction) {
-    yield put({type: SET_TEAMS_PAGE, payload: action.payload})
-}
-
 export function *getTeamsDataWatcher() {
-    yield takeLatest(GET_TEAMS_DATA, getTeams)
-    yield takeEvery(CHANGE_TEAMS_PAGE, changeTeamsPage)
+    yield takeLatest(GET_TEAMS_DATA, getTeams);
 }

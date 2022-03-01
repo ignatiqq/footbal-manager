@@ -1,25 +1,28 @@
 import React, {ForwardedRef} from "react";
 import DatePicker from "react-datepicker";
 
+import type { IMatchInfo } from "../../redux/reducers/competitions/competitionsDataInterfaces";
 import { getUTCDate } from "../../utils/dates";
 
 import "./style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface IDatepicker {
-    firstMatchDate: string | null,
+    firstMatch: IMatchInfo | null,
     changeDataHandler: (startDate: Date, endDate: Date) => void
 }
 
-const Datepicker: React.FC<IDatepicker> = ({firstMatchDate, changeDataHandler}) => {
+const Datepicker: React.FC<IDatepicker> = ({firstMatch, changeDataHandler}) => {
     const [startDate, setStartDate] = React.useState<Date | null>();
     const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate());
 
     React.useEffect(() => {
-        if(firstMatchDate) {
-            setStartDate(new Date(firstMatchDate));
+        if(firstMatch && firstMatch.utcDate) {
+            setStartDate(new Date(firstMatch.utcDate));
+        } else {
+            setStartDate(getUTCDate())
         }
-    }, [firstMatchDate])
+    }, [firstMatch])
 
     const changeStartDate = (date: Date | null) => {
         setStartDate(date);

@@ -2,16 +2,21 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
-import { GET_CURRENT_TEAM_MATCHES, SET_CURRENT_TEAM_PAGE } from '../../redux/actions/teams/actionNames';
+import { GET_CURRENT_TEAM_MATCHES } from '../../redux/actions/teams/actionNames';
 import { Datepicker, Loader, Paginator, CardMatchInfo } from "../../components";
 import { formatDateToRequest } from '../../utils/dates';
 
 import type { IMatchInfo } from '../../redux/reducers/competitions/competitionsDataInterfaces';
+import type { IPagination } from '../../components/Paginator/interfaces';
 
 import sadEmoji from "../../assets/images/sadEmoji.png";
 
 const TeamMatches: React.FC = () => {
     const [slicedData, setSlicedData] = React.useState<Array<IMatchInfo>>();
+    const [pagination, setPagination] = React.useState<IPagination>({
+      page: 1,
+      limit: 7
+    });
 
     const { id } = useParams();
 
@@ -23,10 +28,9 @@ const TeamMatches: React.FC = () => {
         }
     }, [id])
 
-    const { teamByIdName, currentTeamMatchesData, pagination, isLoading, error } = useAppSelector(({teamsData}) => ({
+    const { teamByIdName, currentTeamMatchesData, isLoading, error } = useAppSelector(({teamsData}) => ({
         teamByIdName: teamsData.teamById.data?.name,
         currentTeamMatchesData: teamsData.currentTeamMatches.data,
-        pagination: teamsData.currentTeamMatches.pagination,
         isLoading: teamsData.currentTeamMatches.isLoading,
         error: teamsData.currentTeamMatches.error
     }))
@@ -60,14 +64,14 @@ const TeamMatches: React.FC = () => {
           </div>
           <div className="font-bold mb-4">Матчи</div>
           <div>
-            {currentTeamMatchesData && currentTeamMatchesData.matches.length ? (
-              <Datepicker
-                changeDataHandler={getTeamMatchesByDate}
-                firstMatchDate={currentTeamMatchesData.matches[0].utcDate}
-              />
-            ) : (
-              <div></div>
-            )}
+          {!error.message && !isLoading ? 
+            <Datepicker
+              changeDataHandler={getTeamMatchesByDate}
+              firstMatch={currentTeamMatchesData && currentTeamMatchesData!.matches[0]}
+            />
+            :
+            <div></div>
+          }
           </div>
         </div>
         <div>
@@ -96,7 +100,7 @@ const TeamMatches: React.FC = () => {
         </div>
         {currentTeamMatchesData && currentTeamMatchesData.count && pagination ? (
           <Paginator
-            paginateType={SET_CURRENT_TEAM_PAGE}
+            setPagination={setPagination}
             pagination={pagination}
             position="center"
             count={currentTeamMatchesData.count}

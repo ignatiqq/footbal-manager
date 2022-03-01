@@ -6,11 +6,9 @@ import type { ICompetitions } from "../../reducers/competitions/competitionsData
 import { getCompetitionsData } from "../../../api";
 import { 
     GET_CURRENT_COMPETITION, 
-    CHANGE_CURRENT_COMPETITION_PAGE,
     SET_CURRENT_COMPETITION_LOADING,
     SET_CURRENT_COMPETITION,
     SET_CURRENT_COMPETITION_ERROR,
-    SET_CURRENT_COMPETITION_PAGE
 } from "../../actions/competitions/actionNames";
 
 export function *getCurrentCompetitionData(action:IAction) {
@@ -34,11 +32,6 @@ export function *getCurrentCompetitionData(action:IAction) {
     }
 }
 
-function *currentCompetitionPagination(action: IAction) {
-    yield put({type: SET_CURRENT_COMPETITION_PAGE, payload: action.payload})
-}
-
 export function *getCurrentCompetitionWatcher() {
     yield takeLatest(GET_CURRENT_COMPETITION, getCurrentCompetitionData);
-    yield takeEvery(CHANGE_CURRENT_COMPETITION_PAGE, currentCompetitionPagination);
 }

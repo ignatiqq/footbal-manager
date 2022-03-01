@@ -2,7 +2,6 @@ import {
     SET_TEAMS_DATA, 
     SET_TEAMS_LOADING, 
     SET_TEAMS_ERROR, 
-    SET_TEAMS_PAGE, 
     SET_TEAM_BY_ID_LOADING,
     SET_TEAM_BY_ID_ERROR
 } from "./actionNames";
@@ -20,11 +19,6 @@ export const setTeamsLoading = (data: boolean) => ({
 
 export const setTeamsError = (data: string) => ({
     type: SET_TEAMS_ERROR,
-    payload: data
-})
-
-export const setTeamsPage = (data: number) => ({
-    type: SET_TEAMS_PAGE,
     payload: data
 })
 

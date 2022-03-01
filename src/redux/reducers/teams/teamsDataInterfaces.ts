@@ -1,10 +1,8 @@
-import type { IPagination } from "../../interfaces/globalInterfaces";
 import type { IMatchInfo } from "../competitions/competitionsDataInterfaces";
 
 export interface ITeamsData {
     readonly teams: {
         readonly data: ITeams | null,
-        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string
@@ -12,7 +10,6 @@ export interface ITeamsData {
     },
     readonly currentTeamMatches: {
         readonly data: ICurrentTeam | null,
-        pagination: IPagination,
         isLoading: boolean,
         error: {
             message: string
