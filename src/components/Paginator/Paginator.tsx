@@ -16,9 +16,9 @@ interface IPaginator {
     setPagination: React.Dispatch<React.SetStateAction<IPagination>>
 }
 
-const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, position = "center", pagination, setPagination }) => {
-    const [slicedPages] = usePagination(count, limit, page, pageRange);
-  
+const Paginator: React.FC<IPaginator> = React.memo(({count, limit, page, pageRange, position = "center", pagination, setPagination }) => {
+    const [paginationPages] = usePagination(count, limit, page, pageRange);
+    
     const paginateHandler = (page: number | string) => {
       if(typeof page === "number") {
         setPagination((prev) => {
@@ -59,20 +59,21 @@ const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, positio
     }, [page])
 
     return (
-      <div className={`${
-        position === 'center'
-          ? 'justify-center'
-          : position === 'right'
-          ? 'justify-end'
-          : 'justify-start'
-      } flex`}>
+      <div
+        className={`${
+          position === 'center'
+            ? 'justify-center'
+            : position === 'right'
+            ? 'justify-end'
+            : 'justify-start'
+        } flex`}>
         <button onClick={prevPageHanlder} className="mr-2 md:ml-1 max-w-[24px]">
           <img src={prevIcon} alt="prev" />
         </button>
-        <div
-          className={`flex items-center m-4 md:my-4`}>
-          {slicedPages &&
-            slicedPages.map((item, i) => (
+        <div className={`flex items-center m-4 md:my-4`}>
+          {paginationPages &&
+            paginationPages.length ?
+            paginationPages.map((item, i) => (
               <button
                 onClick={() => paginateHandler(item)}
                 className={`"border border-[#a5a5a5] hover:bg-[#a5a5a5] transition" ${
@@ -81,13 +82,16 @@ const Paginator: React.FC<IPaginator> = ({count, limit, page, pageRange, positio
                 key={item + `${i}`}>
                 {item}
               </button>
-            ))}
+            ))
+            :
+            <div></div>
+          }
         </div>
         <button onClick={nextPageHandler} className="ml-2 md:ml-1 max-w-[24px]">
           <img src={nextIcon} alt="next" />
         </button>
       </div>
     );
-}
+})
 
 export default Paginator;

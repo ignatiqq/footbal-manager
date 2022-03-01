@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 
 import { Header } from "./components/index";
 import { Competitions, PageNotFound, CompetitionPage, Teams, TeamMatches } from "./pages";

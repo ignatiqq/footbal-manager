@@ -91,7 +91,7 @@ const TeamMatches: React.FC = () => {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center min-h-[60vh] text-center">
-              <div className='font-bold mb-4'>К сожалению не нашлось ни одного матча</div>
+              <div className='font-bold mb-4'>К сожалению по вашему запросу ничего не найдено</div>
               <div className='max-w-[60px]'>
                 <img src={sadEmoji} alt="404" />
               </div>

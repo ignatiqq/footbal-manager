@@ -7,7 +7,7 @@ interface ITeamCard {
     image: string
 }
 
-const TeamCard: React.FC<ITeamCard> = ({name, id, image}) => {
+const TeamCard: React.FC<ITeamCard> = React.memo(({name, id, image}) => {
 
     return (
         <Link to={`/teams/${id}/matches`} className='flex flex-col items-center border max-w-[260px] max-h-[260px] min-h-[260px] w-full p-2 m-4 shadow-lg relative hover:bottom-0.5'>
@@ -19,6 +19,6 @@ const TeamCard: React.FC<ITeamCard> = ({name, id, image}) => {
             </div>
         </Link>
     )
-}
+});
 
 export default TeamCard;

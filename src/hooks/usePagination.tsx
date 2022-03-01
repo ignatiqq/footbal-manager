@@ -7,6 +7,8 @@ const usePagination = (count: number | null, limit: number, page: number, pagesR
         if(page && limit && count && pagesRange) {
             const arrayOfPages = splitOnArrayOfPages(limit, count);
             setSlicedPages(slicePagesByCurrentPage(arrayOfPages, page, pagesRange));
+        } else {
+          setSlicedPages([])
         }
     }, [page, limit, count]);
 

@@ -1,21 +1,25 @@
 import React, { ChangeEvent } from 'react';
-
-import { Search, Loader, TeamCard, Paginator } from '../../components';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 
 import { GET_TEAMS_DATA, CLEAR_CURRENT_TEAM } from '../../redux/actions/teams/actionNames';
 import type { ITeamOne } from '../../redux/reducers/teams/teamsDataInterfaces';
 import type { IPagination } from '../../components/Paginator/interfaces';
 
+import { Search, Loader, TeamCard, Paginator } from '../../components';
+import { sliceData } from '../../utils/paginationHelper';
+
 import searchIcon from "../../assets/images/searchIcon.svg";
+import sadEmoji from "../../assets/images/sadEmoji.png";
 
 const Teams: React.FC = () => {
-  const [search, setSearch] = React.useState<string>("");
   const [slicedData, setSlicedData] = React.useState<Array<ITeamOne>>();
   const [pagination, setPagination] = React.useState<IPagination>({
     page: 1,
     limit: 10
   });
+  const [filterValue, setFilterValue] = React.useState<string>("");
+  const [filteredDataCount, setFilteredDataCount] = React.useState<number>(0);
+  const [isFiltered, setIsFiltered] = React.useState<boolean>(false);
 
     const dispatch = useAppDispatch();
 
@@ -27,13 +31,11 @@ const Teams: React.FC = () => {
     }))
 
     React.useEffect(() => {
+      if(!teams) {
         dispatch({type: GET_TEAMS_DATA});
+      }
         dispatch({type: CLEAR_CURRENT_TEAM})
     }, []);
-
-    React.useEffect(() => {
-
-    }, [])
 
     React.useEffect(() => {
         if(teams) {
@@ -42,19 +44,48 @@ const Teams: React.FC = () => {
         }
     }, [teams, pagination])
 
+    const filterDataHandler = () => {
+      if(teams && teams.teams) {
+        if(filterValue) {
+          setIsFiltered(true);
+          const filtered = teams.teams.filter(item => item.name.toLowerCase().includes(filterValue));
+          setFilteredDataCount(filtered.length);
+          setSlicedData(sliceData<ITeamOne>(filtered, pagination.page, pagination.limit));
+        } else if(!filterValue) {
+          setFilteredDataCount(0);
+          setSlicedData(sliceData<ITeamOne>(teams?.teams, pagination.page, pagination.limit));
+        }
+      }
+    };
+
+    const clearFilterHandler = () => {
+      if(teams && teams.teams) {
+        if(filterValue) {
+          setFilterValue("");
+          setFilteredDataCount(0);
+          setSlicedData(sliceData<ITeamOne>(teams?.teams, pagination.page, pagination.limit));
+        }
+      }
+    }
+
   return (
     <div>
       <div className="my-6">
-        <div className="flex items-center">
-          <Search
-            theme={theme}
-            value={search}
-            placeholder="Поиск матчей"
-            changeHandler={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-          />
-          <button>
-            <img className="max-w-[32px] w-full" src={searchIcon} alt="search" />
-          </button>
+        <div>
+          <div className="flex items-center">
+            <Search
+              theme={theme}
+              value={filterValue}
+              placeholder="Поиск матчей"
+              changeHandler={(e: ChangeEvent<HTMLInputElement>) => setFilterValue(e.target.value)}
+            />
+            <button onClick={filterDataHandler}>
+              <img className="max-w-[32px] w-full" src={searchIcon} alt="search" />
+            </button>
+          </div>
+          {
+            filterValue && isFiltered && <button onClick={clearFilterHandler}>Очистить</button>
+          }
         </div>
       </div>
       {!teams && isLoading ? (
@@ -65,6 +96,13 @@ const Teams: React.FC = () => {
         <div className="flex justify-center items-center font-bold text-red-500 min-h-[60vh] text-center">
           {error.message}
         </div>
+      ) : slicedData && !filteredDataCount && !slicedData.length && teams?.teams?.length ? (
+        <div className="flex flex-col justify-center items-center min-h-[60vh] text-center">
+              <div className='font-bold mb-4'>К сожалению по вашему запросу ничего не найдено</div>
+              <div className='max-w-[60px]'>
+                <img src={sadEmoji} alt="404" />
+              </div>
+           </div>
       ) : (
         <div className="flex items-center justify-evenly flex-wrap my-14">
           {slicedData &&
@@ -79,7 +117,7 @@ const Teams: React.FC = () => {
           setPagination={setPagination}
           pagination={pagination}
           position="center"
-          count={teams.count}
+          count={filteredDataCount || (!filteredDataCount && !slicedData?.length && teams.teams?.length) ? filteredDataCount : teams.count}
           limit={pagination.limit}
           page={pagination.page}
         />
