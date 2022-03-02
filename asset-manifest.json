@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/footbal-manager/static/css/main.3fd51d4d.css",
-    "main.js": "/footbal-manager/static/js/main.65e7069a.js",
+    "main.css": "/footbal-manager/static/css/main.9cfd6519.css",
+    "main.js": "/footbal-manager/static/js/main.6f512291.js",
     "static/media/logo.png": "/footbal-manager/static/media/logo.36e11144490a4c725983.png",
     "static/media/sadEmoji.png": "/footbal-manager/static/media/sadEmoji.4b8452e5db720762c4d8.png",
     "static/media/notFound.png": "/footbal-manager/static/media/notFound.37c817a8127c0aa95782.png",
@@ -12,11 +12,11 @@
     "static/media/nextIcon.svg": "/footbal-manager/static/media/nextIcon.a8a406ff69de690b3a8f32e74bfe5640.svg",
     "static/media/prevIcon.svg": "/footbal-manager/static/media/prevIcon.a30227170b76eb4b7757fdf9eacd7470.svg",
     "index.html": "/footbal-manager/index.html",
-    "main.3fd51d4d.css.map": "/footbal-manager/static/css/main.3fd51d4d.css.map",
-    "main.65e7069a.js.map": "/footbal-manager/static/js/main.65e7069a.js.map"
+    "main.9cfd6519.css.map": "/footbal-manager/static/css/main.9cfd6519.css.map",
+    "main.6f512291.js.map": "/footbal-manager/static/js/main.6f512291.js.map"
   },
   "entrypoints": [
-    "static/css/main.3fd51d4d.css",
-    "static/js/main.65e7069a.js"
+    "static/css/main.9cfd6519.css",
+    "static/js/main.6f512291.js"
   ]
 }
