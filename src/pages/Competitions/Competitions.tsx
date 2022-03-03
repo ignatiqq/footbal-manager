@@ -6,7 +6,7 @@ import type { IPagination } from '../../components/Paginator/interfaces';
 
 import { Search, Loader, CompetitionCard, Paginator } from '../../components';
 import { GET_COMPETITIONS_DATA, CLEAR_CURRENT_COMPETITION} from '../../redux/actions/competitions/actionNames';
-import { sliceData } from '../../utils/paginationHelper';
+import useSearch from '../../hooks/useSearch';
 
 import searchIcon from "../../assets/images/searchIcon.svg";
 import sadEmoji from "../../assets/images/sadEmoji.png";
@@ -17,9 +17,7 @@ const Competitions: React.FC = () => {
       page: 1,
       limit: 9
     });
-    const [filterValue, setFilterValue] = React.useState<string>("");
-    const [filteredDataCount, setFilteredDataCount] = React.useState<number>(0);
-    const [isFiltered, setIsFiltered] = React.useState<boolean>(false);
+    const [filterValue, setFilterValue] = React.useState<string>('');
 
     const dispatch = useAppDispatch();
 
@@ -29,6 +27,8 @@ const Competitions: React.FC = () => {
         error: competitionsData.competitions.error,
         theme: globalSettings.theme
     }))
+
+    const {filterDataHandler, clearFilterHandler, filteredDataCount, isFiltered} = useSearch<ICompetitionOne>(competitions?.competitions, pagination, setSlicedData, setFilterValue, filterValue);
 
     React.useEffect(() => {
       if(!competitions) {
@@ -43,30 +43,6 @@ const Competitions: React.FC = () => {
             setSlicedData(sliced);
         }
     }, [competitions, pagination]);
-
-    const filterDataHandler = () => {
-      if(competitions && competitions.competitions) {
-        if(filterValue) {
-          setIsFiltered(true);
-          const filtered = competitions.competitions.filter(item => item.name.toLowerCase().includes(filterValue));
-          setFilteredDataCount(filtered.length);
-          setSlicedData(sliceData<ICompetitionOne>(filtered, pagination.page, pagination.limit));
-        } else if(!filterValue) {
-          setFilteredDataCount(0);
-          setSlicedData(sliceData<ICompetitionOne>(competitions?.competitions, pagination.page, pagination.limit));
-        }
-      }
-    };
-
-    const clearFilterHandler = () => {
-      if(competitions && competitions.competitions) {
-        if(filterValue) {
-          setFilterValue("");
-          setFilteredDataCount(0);
-          setSlicedData(sliceData<ICompetitionOne>(competitions?.competitions, pagination.page, pagination.limit));
-        }
-      }
-    }
 
     return (
       <div>
@@ -84,7 +60,7 @@ const Competitions: React.FC = () => {
               </button>
             </div>
             {
-              filterValue && isFiltered && <button onClick={clearFilterHandler}>Очистить</button>
+              isFiltered && <button onClick={clearFilterHandler}>Очистить</button>
             }
           </div>
         </div>

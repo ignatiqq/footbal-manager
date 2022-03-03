@@ -14,7 +14,7 @@ import sadEmoji from "../../assets/images/sadEmoji.png";
 const CompetitionPage: React.FC = () => {
     const [slicedData, setSlicedData] = React.useState<Array<IMatchInfo>>();
     const [pagination, setPagination] = React.useState<IPagination>({
-      page: 1,
+      page: 1,  
       limit: 7
     });
 
@@ -59,7 +59,7 @@ const CompetitionPage: React.FC = () => {
           </div>
           <div className="font-bold mb-4">Матчи</div>
           <div> 
-          {!error.message && !isLoading ? 
+          {!isLoading ? 
             <Datepicker
               changeDataHandler={getCurrentCompetitionByDate}
               firstMatch={currentCompetitionData && currentCompetitionData!.matches[0]}

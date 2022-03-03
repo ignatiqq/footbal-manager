@@ -11,7 +11,7 @@ import App from './App';
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
+      <Router basename="/footbal-manager">
         <App />
       </Router>
     </Provider>

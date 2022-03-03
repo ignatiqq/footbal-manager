@@ -10,18 +10,17 @@ import { sliceData } from '../../utils/paginationHelper';
 
 import searchIcon from "../../assets/images/searchIcon.svg";
 import sadEmoji from "../../assets/images/sadEmoji.png";
+import useSearch from '../../hooks/useSearch';
 
 const Teams: React.FC = () => {
-  const [slicedData, setSlicedData] = React.useState<Array<ITeamOne>>();
+  const [slicedData, setSlicedData] = React.useState<Array<ITeamOne>>([]);
   const [pagination, setPagination] = React.useState<IPagination>({
     page: 1,
     limit: 10
   });
-  const [filterValue, setFilterValue] = React.useState<string>("");
-  const [filteredDataCount, setFilteredDataCount] = React.useState<number>(0);
-  const [isFiltered, setIsFiltered] = React.useState<boolean>(false);
 
     const dispatch = useAppDispatch();
+    const [filterValue, setFilterValue] = React.useState<string>('');
 
     const { teams, isLoading, error, theme } = useAppSelector(({teamsData, globalSettings}) => ({
         teams: teamsData.teams.data,
@@ -29,6 +28,8 @@ const Teams: React.FC = () => {
         error: teamsData.teams.error,
         theme: globalSettings.theme
     }))
+
+    const {filterDataHandler, clearFilterHandler, filteredDataCount, isFiltered} = useSearch<ITeamOne>(teams?.teams, pagination, setSlicedData, setFilterValue, filterValue);
 
     React.useEffect(() => {
       if(!teams) {
@@ -43,30 +44,6 @@ const Teams: React.FC = () => {
             setSlicedData(sliced);
         }
     }, [teams, pagination])
-
-    const filterDataHandler = () => {
-      if(teams && teams.teams) {
-        if(filterValue) {
-          setIsFiltered(true);
-          const filtered = teams.teams.filter(item => item.name.toLowerCase().includes(filterValue));
-          setFilteredDataCount(filtered.length);
-          setSlicedData(sliceData<ITeamOne>(filtered, pagination.page, pagination.limit));
-        } else if(!filterValue) {
-          setFilteredDataCount(0);
-          setSlicedData(sliceData<ITeamOne>(teams?.teams, pagination.page, pagination.limit));
-        }
-      }
-    };
-
-    const clearFilterHandler = () => {
-      if(teams && teams.teams) {
-        if(filterValue) {
-          setFilterValue("");
-          setFilteredDataCount(0);
-          setSlicedData(sliceData<ITeamOne>(teams?.teams, pagination.page, pagination.limit));
-        }
-      }
-    }
 
   return (
     <div>
@@ -84,7 +61,7 @@ const Teams: React.FC = () => {
             </button>
           </div>
           {
-            filterValue && isFiltered && <button onClick={clearFilterHandler}>Очистить</button>
+            isFiltered && <button onClick={clearFilterHandler}>Очистить</button>
           }
         </div>
       </div>
