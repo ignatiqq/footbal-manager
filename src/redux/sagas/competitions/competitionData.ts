@@ -9,13 +9,15 @@ import {
     SET_COMPETITIONS, 
     SET_COMPETITIONS_ERROR, 
     SET_COMPETITIONS_LOADING, 
-} from "../../actions/competitions/actionNames";
+} from "../../actions/competitions/actionNames";    
 
 export function *getCompetitions() {
     try {
         yield put({type: SET_COMPETITIONS_LOADING, payload: true});
 
         const response: Response = yield call(getCompetitionsData.getCompetitions);
+
+        console.log(response)
 
         const data: IApiRequestError | ICompetitions = yield call([response, response.json]);
 
