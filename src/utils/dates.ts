@@ -1,5 +1,5 @@
-export const getUTCDate = () => {
-    return new Date(Date.now() - ((new Date().getTimezoneOffset()) * 60))
+export const getUTCDate = (date: number) => {
+    return new Date(date - ((new Date().getTimezoneOffset()) * 60))
 }
 
 export const formatToLocalDateString = (date: string) => {

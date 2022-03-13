@@ -30,6 +30,7 @@ const useSearch = <T extends object>(
             setFilteredDataCount(filtered.length);
             setSlicedData(sliceData<T>(filtered, pagination.page, pagination.limit));
           } else if(!filterValue) {
+            setIsFiltered(false)
             setFilteredDataCount(0);
             setSlicedData(sliceData<T>(data, pagination.page, pagination.limit));
           }

@@ -12,17 +12,15 @@ interface IDatepicker {
     changeDataHandler: (startDate: Date, endDate: Date) => void
 }
 
-const Datepicker: React.FC<IDatepicker> = ({firstMatch, changeDataHandler}) => {
+const maxOldMatchesDate = Date.now() - 24*60*60*1000*365*2;
+
+const Datepicker: React.FC<IDatepicker> = ({changeDataHandler}) => {
     const [startDate, setStartDate] = React.useState<Date | null>();
-    const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate());
+    const [endDate, setEndDate] = React.useState<Date | null>(getUTCDate(Date.now()));
 
     React.useEffect(() => {
-        if(firstMatch && firstMatch.utcDate) {
-            setStartDate(new Date(firstMatch.utcDate));
-        } else {
-            setStartDate(getUTCDate())
-        }
-    }, [firstMatch])
+        setStartDate(getUTCDate(maxOldMatchesDate))
+    }, [])
 
     const changeStartDate = (date: Date | null) => {
         setStartDate(date);

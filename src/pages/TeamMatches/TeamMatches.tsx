@@ -64,14 +64,10 @@ const TeamMatches: React.FC = () => {
           </div>
           <div className="font-bold mb-4">Матчи</div>
           <div>
-          {!isLoading ? 
             <Datepicker
               changeDataHandler={getTeamMatchesByDate}
               firstMatch={currentTeamMatchesData && currentTeamMatchesData!.matches[0]}
             />
-            :
-            <div></div>
-          }
           </div>
         </div>
         <div>

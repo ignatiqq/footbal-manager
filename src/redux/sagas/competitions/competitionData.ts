@@ -17,8 +17,6 @@ export function *getCompetitions() {
 
         const response: Response = yield call(getCompetitionsData.getCompetitions);
 
-        console.log(response)
-
         const data: IApiRequestError | ICompetitions = yield call([response, response.json]);
 
         if("error" in data || "errorCode" in data) {

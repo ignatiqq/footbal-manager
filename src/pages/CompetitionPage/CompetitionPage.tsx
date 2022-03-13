@@ -59,14 +59,10 @@ const CompetitionPage: React.FC = () => {
           </div>
           <div className="font-bold mb-4">Матчи</div>
           <div> 
-          {!isLoading ? 
             <Datepicker
               changeDataHandler={getCurrentCompetitionByDate}
               firstMatch={currentCompetitionData && currentCompetitionData!.matches[0]}
             />
-            :
-            <div></div>
-          }
           </div>
         </div>
         <div>
